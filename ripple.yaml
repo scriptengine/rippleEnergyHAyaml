@@ -1,0 +1,68 @@
+#Ripple API via YAML
+#Prototype
+#Jeremy Pack, 19June2023
+
+rest:
+  #Ripple
+  - resource: "https://rippleenergy.com/rest/member_data/YOUR-API-KEY-HERE"
+    scan_interval: 300 # Five minutes
+    sensor:
+      - name: ripple_email
+        icon: mdi:email
+        value_template: "{{ value_json.email }}"
+
+      - name: ripple_copyright
+        value_template: "{{ value_json.copyright_notice }}"
+
+      - name: ripple_asset0_name
+        value_template: "{{ value_json.generation_assets[0].name }}"
+
+      - name: ripple_asset0_type
+        value_template: "{{ value_json.generation_assets[0].type }}"
+
+      - name: ripple_asset0_status
+        value_template: "{{ value_json.generation_assets[0].status }}"
+
+      - name: ripple_asset0_total_capacity
+        value_template: "{{ value_json.generation_assets[0].total_capacity }}"
+
+      - name: ripple_asset0_total_capacity_units
+        value_template: "{{ value_json.generation_assets[0].total_capacity_units }}"
+
+      - name: ripple_asset0_member_capacity
+        value_template: "{{ value_json.generation_assets[0].member_capacity }}"
+
+      - name: ripple_asset0_member_capacity_units
+        value_template: "{{ value_json.generation_assets[0].member_capacity_units }}"
+
+      - name: ripple_asset0_member_expected_annual_generation
+        value_template: "{{ value_json.generation_assets[0].member_expected_annual_generation }}"
+
+      - name: ripple_asset0_member_expected_annual_generation_units
+        value_template: "{{ value_json.generation_assets[0].member_expected_annual_generation_units }}"
+
+      #Generation
+      - name: ripple_asset0_generation_generation_unit
+        value_template: "{{ value_json.generation_assets[0].generation.generation_unit }}"
+
+      - name: ripple_asset0_generation_latest_telemetry
+        value_template: "{{ value_json.generation_assets[0].generation.latest_telemetry }}"
+
+      #Today
+      - name: ripple_asset0_generation_today_generated
+        value_template: "{{ value_json.generation_assets[0].generation.today.generated }}"
+        device_class: energy
+
+      - name: ripple_asset0_generation_today_earned
+        value_template: "{{ value_json.generation_assets[0].generation.today.earned }}"
+        device_class: monetary
+
+      - name: ripple_asset0_generation_today_from
+        value_template: "{{ value_json.generation_assets[0].generation.today.from }}"
+
+      - name: ripple_asset0_generation_today_to
+        value_template: "{{ value_json.generation_assets[0].generation.today.to }}"
+
+    binary_sensor:
+      - name: ripple_asset0_generation_today_estimate
+        value_template: "{{ value_json.generation_assets[0].generation.contains_estimate }}"
