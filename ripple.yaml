@@ -1,10 +1,15 @@
 #Ripple API via YAML
 #Prototype
-#Jeremy Pack, 19June2023
+#Jeremy Pack, 19June2023 Prototype
+#Jeremy Pack, 27June2023 Includes all values
+
+#Bugs
+#Only considers one asset (which is hardcoded)
+#Unit of measurement is part of data but can not be set in sensor
 
 rest:
   #Ripple
-  - resource: "https://rippleenergy.com/rest/member_data/YOUR-API-KEY-HERE"
+  - resource: "https://rippleenergy.com/rest/member_data/YOUR-API-KEY-HERE""
     scan_interval: 300 # Five minutes
     sensor:
       - name: ripple_email
@@ -12,12 +17,15 @@ rest:
         value_template: "{{ value_json.email }}"
 
       - name: ripple_copyright
+        icon: mdi:copyright
         value_template: "{{ value_json.copyright_notice }}"
 
       - name: ripple_asset0_name
+        icon: mdi:alphabetical-variant
         value_template: "{{ value_json.generation_assets[0].name }}"
 
       - name: ripple_asset0_type
+        icon: mdi:wind-turbine
         value_template: "{{ value_json.generation_assets[0].type }}"
 
       - name: ripple_asset0_status
@@ -25,44 +33,263 @@ rest:
 
       - name: ripple_asset0_total_capacity
         value_template: "{{ value_json.generation_assets[0].total_capacity }}"
+        icon: mdi:numeric
 
       - name: ripple_asset0_total_capacity_units
         value_template: "{{ value_json.generation_assets[0].total_capacity_units }}"
+        icon: mdi:lightning-bolt
 
       - name: ripple_asset0_member_capacity
         value_template: "{{ value_json.generation_assets[0].member_capacity }}"
+        icon: mdi:account-cash
 
       - name: ripple_asset0_member_capacity_units
         value_template: "{{ value_json.generation_assets[0].member_capacity_units }}"
 
       - name: ripple_asset0_member_expected_annual_generation
         value_template: "{{ value_json.generation_assets[0].member_expected_annual_generation }}"
+        icon: mdi:numeric
 
       - name: ripple_asset0_member_expected_annual_generation_units
         value_template: "{{ value_json.generation_assets[0].member_expected_annual_generation_units }}"
+        icon: mdi:lightning-bolt
+
+      - name: ripple_asset0_forecast
+        value_template: "{{ value_json.generation_assets[0].forecast }}"
+        icon: mdi:weather-cloudy
 
       #Generation
       - name: ripple_asset0_generation_generation_unit
         value_template: "{{ value_json.generation_assets[0].generation.generation_unit }}"
+        icon: mdi:lightning-bolt
 
       - name: ripple_asset0_generation_latest_telemetry
         value_template: "{{ value_json.generation_assets[0].generation.latest_telemetry }}"
+        icon: mdi:newspaper-variant-outline
+
+      - name: ripple_asset0_generation_latest
+        value_template: "{{ value_json.generation_assets[0].generation.latest }}"
+        icon: mdi:newspaper-variant-outline
 
       #Today
       - name: ripple_asset0_generation_today_generated
         value_template: "{{ value_json.generation_assets[0].generation.today.generated }}"
         device_class: energy
+        ##BUG
+        #unit_of_measurement is just a string
+        #https://ww#w.home-assistant.io/integrations/template/
+        #"unit_of_measurement string (optional, default: None)""
+        #https://community.home-assistant.io/t/template-sensor-with-if-then-for-unit-of-measurement/390393/2
+
+        #unit_of_measurement: "{{states('sensor.ripple_asset0_generation_generation_unit')}}"
+        unit_of_measurement: "kWh"
+        icon: mdi:meter-electric-outline
 
       - name: ripple_asset0_generation_today_earned
         value_template: "{{ value_json.generation_assets[0].generation.today.earned }}"
         device_class: monetary
+        icon: mdi:circle-multiple-outline
 
       - name: ripple_asset0_generation_today_from
         value_template: "{{ value_json.generation_assets[0].generation.today.from }}"
+        icon: mdi:calendar-start-outline
 
       - name: ripple_asset0_generation_today_to
         value_template: "{{ value_json.generation_assets[0].generation.today.to }}"
+        icon: mdi:calendar-end-outline
+
+      #yesterday
+      - name: ripple_asset0_generation_yesterday_generated
+        value_template: "{{ value_json.generation_assets[0].generation.yesterday.generated }}"
+        device_class: energy
+        #unit_of_measurement: "{{sensor.ripple_asset0_generation_generation_unit}}"
+        unit_of_measurement: "kWh"
+        icon: mdi:meter-electric-outline
+
+      - name: ripple_asset0_generation_yesterday_earned
+        value_template: "{{ value_json.generation_assets[0].generation.yesterday.earned }}"
+        device_class: monetary
+        icon: mdi:circle-multiple-outline
+
+      - name: ripple_asset0_generation_yesterday_from
+        value_template: "{{ value_json.generation_assets[0].generation.yesterday.from }}"
+        icon: mdi:calendar-start-outline
+
+      - name: ripple_asset0_generation_yesterday_to
+        value_template: "{{ value_json.generation_assets[0].generation.yesterday.to }}"
+        icon: mdi:calendar-end-outline
+
+      #this_week
+      - name: ripple_asset0_generation_this_week_generated
+        value_template: "{{ value_json.generation_assets[0].generation.this_week.generated }}"
+        device_class: energy
+        #unit_of_measurement: "{{sensor.ripple_asset0_generation_generation_unit}}"
+        unit_of_measurement: "kWh"
+        icon: mdi:meter-electric-outline
+
+      - name: ripple_asset0_generation_this_week_earned
+        value_template: "{{ value_json.generation_assets[0].generation.this_week.earned }}"
+        device_class: monetary
+        icon: mdi:circle-multiple-outline
+
+      - name: ripple_asset0_generation_this_week_from
+        value_template: "{{ value_json.generation_assets[0].generation.this_week.from }}"
+        icon: mdi:calendar-start-outline
+
+      - name: ripple_asset0_generation_this_week_to
+        value_template: "{{ value_json.generation_assets[0].generation.this_week.to }}"
+        icon: mdi:calendar-end-outline
+
+      #last_week
+      - name: ripple_asset0_generation_last_week_generated
+        value_template: "{{ value_json.generation_assets[0].generation.last_week.generated }}"
+        device_class: energy
+        #unit_of_measurement: "{{sensor.ripple_asset0_generation_generation_unit}}"
+        unit_of_measurement: "kWh"
+        icon: mdi:meter-electric-outline
+
+      - name: ripple_asset0_generation_last_week_earned
+        value_template: "{{ value_json.generation_assets[0].generation.last_week.earned }}"
+        device_class: monetary
+        icon: mdi:circle-multiple-outline
+
+      - name: ripple_asset0_generation_last_week_from
+        value_template: "{{ value_json.generation_assets[0].generation.last_week.from }}"
+        icon: mdi:calendar-start-outline
+
+      - name: ripple_asset0_generation_last_week_to
+        value_template: "{{ value_json.generation_assets[0].generation.last_week.to }}"
+        icon: mdi:calendar-end-outline
+
+      #this_month
+      - name: ripple_asset0_generation_this_month_generated
+        value_template: "{{ value_json.generation_assets[0].generation.this_month.generated }}"
+        device_class: energy
+        #unit_of_measurement: "{{sensor.ripple_asset0_generation_generation_unit}}"
+        unit_of_measurement: "kWh"
+        icon: mdi:meter-electric-outline
+
+      - name: ripple_asset0_generation_this_month_earned
+        value_template: "{{ value_json.generation_assets[0].generation.this_month.earned }}"
+        device_class: monetary
+        icon: mdi:circle-multiple-outline
+
+      - name: ripple_asset0_generation_this_month_from
+        value_template: "{{ value_json.generation_assets[0].generation.this_month.from }}"
+        icon: mdi:calendar-start-outline
+
+      - name: ripple_asset0_generation_this_month_to
+        value_template: "{{ value_json.generation_assets[0].generation.this_month.to }}"
+        icon: mdi:calendar-end-outline
+
+      #last_month
+      - name: ripple_asset0_generation_last_month_generated
+        value_template: "{{ value_json.generation_assets[0].generation.last_month.generated }}"
+        device_class: energy
+        #unit_of_measurement: "{{sensor.ripple_asset0_generation_generation_unit}}"
+        unit_of_measurement: "kWh"
+        icon: mdi:meter-electric-outline
+
+      - name: ripple_asset0_generation_last_month_earned
+        value_template: "{{ value_json.generation_assets[0].generation.last_month.earned }}"
+        device_class: monetary
+        icon: mdi:circle-multiple-outline
+
+      - name: ripple_asset0_generation_last_month_from
+        value_template: "{{ value_json.generation_assets[0].generation.last_month.from }}"
+        icon: mdi:calendar-start-outline
+
+      - name: ripple_asset0_generation_last_month_to
+        value_template: "{{ value_json.generation_assets[0].generation.last_month.to }}"
+        icon: mdi:calendar-end-outline
+
+      #this_year
+      - name: ripple_asset0_generation_this_year_generated
+        value_template: "{{ value_json.generation_assets[0].generation.this_year.generated }}"
+        device_class: energy
+        #unit_of_measurement: "{{sensor.ripple_asset0_generation_generation_unit}}"
+        unit_of_measurement: "kWh"
+        icon: mdi:meter-electric-outline
+
+      - name: ripple_asset0_generation_this_year_earned
+        value_template: "{{ value_json.generation_assets[0].generation.this_year.earned }}"
+        device_class: monetary
+        icon: mdi:circle-multiple-outline
+
+      - name: ripple_asset0_generation_this_year_from
+        value_template: "{{ value_json.generation_assets[0].generation.this_year.from }}"
+        icon: mdi:calendar-start-outline
+
+      - name: ripple_asset0_generation_this_year_to
+        value_template: "{{ value_json.generation_assets[0].generation.this_year.to }}"
+        icon: mdi:calendar-end-outline
+
+      #last_year
+      - name: ripple_asset0_generation_last_year_generated
+        value_template: "{{ value_json.generation_assets[0].generation.last_year.generated }}"
+        device_class: energy
+        #unit_of_measurement: "{{sensor.ripple_asset0_generation_generation_unit}}"
+        unit_of_measurement: "kWh"
+        icon: mdi:meter-electric-outline
+
+      - name: ripple_asset0_generation_last_year_earned
+        value_template: "{{ value_json.generation_assets[0].generation.last_year.earned }}"
+        device_class: monetary
+        icon: mdi:circle-multiple-outline
+
+      - name: ripple_asset0_generation_last_year_from
+        value_template: "{{ value_json.generation_assets[0].generation.last_year.from }}"
+        icon: mdi:calendar-start-outline
+
+      - name: ripple_asset0_generation_last_year_to
+        value_template: "{{ value_json.generation_assets[0].generation.last_year.to }}"
+        icon: mdi:calendar-end-outline
+
+      #total
+      - name: ripple_asset0_generation_total_generated
+        value_template: "{{ value_json.generation_assets[0].generation.total.generated }}"
+        device_class: energy
+        #unit_of_measurement: "{{sensor.ripple_asset0_generation_generation_unit}}"
+        unit_of_measurement: "kWh"
+        icon: mdi:meter-electric-outline
+
+      - name: ripple_asset0_generation_total_earned
+        value_template: "{{ value_json.generation_assets[0].generation.total.earned }}"
+        device_class: monetary
+        icon: mdi:circle-multiple-outline
+
+      - name: ripple_asset0_generation_total_from
+        value_template: "{{ value_json.generation_assets[0].generation.total.from }}"
+        icon: mdi:calendar-start-outline
+
+      - name: ripple_asset0_generation_total_to
+        value_template: "{{ value_json.generation_assets[0].generation.total.to }}"
+        icon: mdi:calendar-end-outline
 
     binary_sensor:
       - name: ripple_asset0_generation_today_estimate
-        value_template: "{{ value_json.generation_assets[0].generation.contains_estimate }}"
+        value_template: "{{ value_json.generation_assets[0].generation.today.contains_estimate }}"
+
+      - name: ripple_asset0_generation_yesterday_estimate
+        value_template: "{{ value_json.generation_assets[0].generation.yesterday.contains_estimate }}"
+
+      - name: ripple_asset0_generation_thisweek_estimate
+        value_template: "{{ value_json.generation_assets[0].generation.this_week.contains_estimate }}"
+
+      - name: ripple_asset0_generation_lastweek_estimate
+        value_template: "{{ value_json.generation_assets[0].generation.last_week.contains_estimate }}"
+
+      - name: ripple_asset0_generation_thismonth_estimate
+        value_template: "{{ value_json.generation_assets[0].generation.this_month.contains_estimate }}"
+
+      - name: ripple_asset0_generation_lastmonth_estimate
+        value_template: "{{ value_json.generation_assets[0].generation.last_month.contains_estimate }}"
+
+      - name: ripple_asset0_generation_thisyear_estimate
+        value_template: "{{ value_json.generation_assets[0].generation.this_year.contains_estimate }}"
+
+      - name: ripple_asset0_generation_lastyear_estimate
+        value_template: "{{ value_json.generation_assets[0].generation.last_year.contains_estimate }}"
+
+      - name: ripple_asset0_generation_total_estimate
+        value_template: "{{ value_json.generation_assets[0].generation.total.contains_estimate }}"
